@@ -1,6 +1,12 @@
 Extension { #name : #String }
 
 { #category : #'*Steamer' }
+String >> isRecognizedSteamJson [
+
+	^ '*:{"success":true,*' match: self
+]
+
+{ #category : #'*Steamer' }
 String >> isWellFormedSteamId [
 
 	| steamIdMaxSize |

@@ -1,6 +1,13 @@
 Extension { #name : #StringTest }
 
 { #category : #'*Steamer-Tests' }
+StringTest >> testIsRecognizedSteamJson [
+
+	self assert: '{"10":{"success":true,"data"' isRecognizedSteamJson .
+	self deny: '{"1":{"success":false}}' isRecognizedSteamJson 
+]
+
+{ #category : #'*Steamer-Tests' }
 StringTest >> testIsWellFormedSteamId [
 
 self assert: '1' isWellFormedSteamId.
