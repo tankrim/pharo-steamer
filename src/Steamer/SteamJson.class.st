@@ -24,9 +24,28 @@ SteamJson class >> newWithId: aString [
 	^ self basicNew setId: aString;yourself
 ]
 
+{ #category : #'as yet unclassified' }
+SteamJson >> fetchYourself [
+
+	| fetchedJson |
+	fetchedJson := ZnClient new
+		               enforceAcceptContentType: true;
+		               accept: ZnMimeType applicationJson;
+		               get: self url.
+	fetchedJson isWellFormedSteamJson ifFalse: [ 
+		self error: 'Invalid Steam json' ].
+	json := fetchedJson
+]
+
 { #category : #accessing }
 SteamJson >> id [
 	^ id
+]
+
+{ #category : #accessing }
+SteamJson >> json [
+
+	^ json
 ]
 
 { #category : #initialization }

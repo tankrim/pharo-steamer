@@ -20,3 +20,11 @@ SteamJsonTest >> testId [
 	instance := SteamJson newWithId: '10'.
 	self assert: instance id equals: '10'.
 ]
+
+{ #category : #tests }
+SteamJsonTest >> testJson [
+
+	| instance |
+	instance := (SteamJson newWithId: '10') fetchYourself.
+	self assert: (instance json copyFrom: 1 to: 15) equals: '{"10":{"success'
+]
