@@ -20,6 +20,13 @@ SteamId >> identifier [
 	^ identifier
 ]
 
+{ #category : #testing }
+SteamId >> isWellFormed [
+
+	identifier isString ifFalse: [ ^ false ].
+	^ identifier isWellFormedSteamId
+]
+
 { #category : #initialization }
 SteamId >> setIdentifier: aString [ 
 	identifier := aString.
