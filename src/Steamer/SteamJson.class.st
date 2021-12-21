@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'id',
-		'json'
+		'json',
+		'data'
 	],
 	#classVars : [
 		'BaseUrl'
@@ -22,6 +23,11 @@ SteamJson class >> baseUrl [
 { #category : #'instance creation' }
 SteamJson class >> newWithId: aString [ 
 	^ self basicNew setId: aString;yourself
+]
+
+{ #category : #accessing }
+SteamJson >> data [
+	^ data
 ]
 
 { #category : #'as yet unclassified' }
@@ -46,6 +52,17 @@ SteamJson >> id [
 SteamJson >> json [
 
 	^ json
+]
+
+{ #category : #'as yet unclassified' }
+SteamJson >> parseYourself [
+
+	| initial parsedJson |
+	json isRecognizedSteamJson ifFalse: [ 
+		self error: 'Unrecognized data' ].
+	initial := (STON fromString: self json) at: self id.
+	parsedJson := initial at: 'data'.
+	data := parsedJson
 ]
 
 { #category : #initialization }

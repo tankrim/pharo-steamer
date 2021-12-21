@@ -14,6 +14,16 @@ SteamJsonTest >> testCreating [
 ]
 
 { #category : #tests }
+SteamJsonTest >> testData [
+
+	| instance |
+	instance := SteamJson newWithId: '10'.
+	instance fetchYourself.
+	instance parseYourself.
+	self assert: (instance data includesKey: 'name')
+]
+
+{ #category : #tests }
 SteamJsonTest >> testId [
 
 	| instance |
