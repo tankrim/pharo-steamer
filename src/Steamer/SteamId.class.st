@@ -6,3 +6,16 @@ Class {
 	],
 	#category : #Steamer
 }
+
+{ #category : #'instance creation' }
+SteamId class >> newFromString: aString [
+
+	^ self basicNew
+		  setIdentifier: aString;
+		  yourself
+]
+
+{ #category : #initialization }
+SteamId >> setIdentifier: aString [ 
+	identifier := aString.
+]
