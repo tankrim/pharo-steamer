@@ -13,3 +13,11 @@ self deny: 'a' isWellFormedSteamId .
 self deny: '1a' isWellFormedSteamId .
 self deny: '' isWellFormedSteamId 
 ]
+
+{ #category : #'*Steamer-Tests' }
+StringTest >> testIsWellFormedSteamJson [
+
+self assert: '{"1":{"success":false}}' isWellFormedSteamJson.
+self assert: '{"10":{"success":true,"data"' isWellFormedSteamJson.
+self deny: '{}' isWellFormedSteamJson 
+]

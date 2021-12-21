@@ -9,3 +9,9 @@ String >> isWellFormedSteamId [
 		  self size <= steamIdMaxSize and: [ 
 			  self isAllDigits and: [ self first ~= $0 ] ] ]
 ]
+
+{ #category : #'*Steamer' }
+String >> isWellFormedSteamJson [
+
+	^ '*:{"success":*' match: self
+]
