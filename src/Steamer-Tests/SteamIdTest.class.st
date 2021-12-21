@@ -6,3 +6,11 @@ Class {
 	#superclass : #TestCase,
 	#category : #'Steamer-Tests'
 }
+
+{ #category : #tests }
+SteamIdTest >> testIdentifier [
+
+	| instance |
+	instance := SteamId newFromString: '10'.
+	self assert: instance identifier equals: '10'
+]

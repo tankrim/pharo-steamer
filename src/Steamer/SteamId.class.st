@@ -15,6 +15,11 @@ SteamId class >> newFromString: aString [
 		  yourself
 ]
 
+{ #category : #accessing }
+SteamId >> identifier [
+	^ identifier
+]
+
 { #category : #initialization }
 SteamId >> setIdentifier: aString [ 
 	identifier := aString.
