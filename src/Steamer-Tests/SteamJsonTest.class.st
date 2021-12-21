@@ -12,3 +12,11 @@ SteamJsonTest >> testCreating [
 
 	self should: [ SteamJson newWithId: '01' ] raise: Error
 ]
+
+{ #category : #tests }
+SteamJsonTest >> testId [
+
+	| instance |
+	instance := SteamJson newWithId: '10'.
+	self assert: instance id equals: '10'.
+]

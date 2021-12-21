@@ -12,6 +12,11 @@ SteamJson class >> newWithId: aString [
 	^ self basicNew setId: aString;yourself
 ]
 
+{ #category : #accessing }
+SteamJson >> id [
+	^ id
+]
+
 { #category : #initialization }
 SteamJson >> setId: aString [ 
 	| steamId|
