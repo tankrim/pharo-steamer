@@ -76,10 +76,11 @@ SteamData >> priceData [
 ]
 
 { #category : #initialization }
-SteamData >> setId: aString [ 
-	| steamId|
+SteamData >> setId: aString [
+
+	| steamId |
 	steamId := SteamId newFromString: aString.
-	steamId isWellFormed ifFalse: [ self error: 'Not a well-formed id: ', aString ].
+	steamId isWellFormed ifFalse: [ MalformedSteamId signalWith: aString ].
 	id := steamId identifier
 ]
 
