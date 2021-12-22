@@ -21,8 +21,12 @@ SteamJson class >> baseUrl [
 ]
 
 { #category : #'instance creation' }
-SteamJson class >> newWithId: aString [ 
-	^ self basicNew setId: aString;yourself
+SteamJson class >> newWithId: aString [
+
+	^ self basicNew
+		  setId: aString;
+		  updateYourself;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -71,6 +75,13 @@ SteamJson >> setId: aString [
 	steamId := SteamId newFromString: aString.
 	steamId isWellFormed ifFalse: [ self error: 'Not a well-formed id: ', aString ].
 	id := steamId identifier
+]
+
+{ #category : #initialization }
+SteamJson >> updateYourself [
+
+	self fetchYourself.
+	self parseYourself
 ]
 
 { #category : #'as yet unclassified' }
