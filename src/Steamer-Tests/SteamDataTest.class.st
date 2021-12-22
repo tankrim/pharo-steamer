@@ -18,8 +18,6 @@ SteamDataTest >> testData [
 
 	| instance |
 	instance := SteamData newWithId: '10'.
-	instance fetchYourself.
-	instance parseYourself.
 	self assert: (instance data includesKey: 'name')
 ]
 
@@ -35,6 +33,8 @@ SteamDataTest >> testId [
 SteamDataTest >> testJson [
 
 	| instance |
-	instance := (SteamData newWithId: '10') fetchYourself.
-	self assert: (instance json copyFrom: 1 to: 15) equals: '{"10":{"success'
+	instance := (SteamData newWithId: '10').
+	self
+		assert: (instance json copyFrom: 1 to: 15)
+		equals: '{"10":{"success'
 ]
