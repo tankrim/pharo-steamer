@@ -34,7 +34,7 @@ SteamData >> data [
 	^ data
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 SteamData >> fetchYourself [
 
 	| fetchedJson |
@@ -58,7 +58,7 @@ SteamData >> json [
 	^ json
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 SteamData >> parseYourself [
 
 	| initial parsedJson |
@@ -84,7 +84,7 @@ SteamData >> updateYourself [
 	self parseYourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 SteamData >> url [
 ^ self class baseUrl, self id
 ]
