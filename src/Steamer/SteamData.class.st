@@ -42,8 +42,7 @@ SteamData >> fetchYourself [
 		               enforceAcceptContentType: true;
 		               accept: ZnMimeType applicationJson;
 		               get: self url.
-	fetchedJson isWellFormedSteamJson ifFalse: [ 
-		self error: 'Invalid Steam json' ].
+	fetchedJson isWellFormedSteamJson ifFalse: [ MalformedSteamJson signalWith: fetchedJson ].
 	json := fetchedJson
 ]
 
