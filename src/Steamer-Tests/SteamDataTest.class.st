@@ -38,3 +38,13 @@ SteamDataTest >> testJson [
 		assert: (instance json copyFrom: 1 to: 15)
 		equals: '{"10":{"success'
 ]
+
+{ #category : #tests }
+SteamDataTest >> testPriceData [
+
+	| instance1 instance2 |
+	instance1 := SteamData newWithId: '10'.
+	self assert: (instance1 priceData includesKey: 'currency').
+	instance2 := SteamData newWithId: '1920'.
+	self assert: (instance2 priceData includesKey: 'currency')
+]

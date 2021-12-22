@@ -69,6 +69,12 @@ SteamData >> parseYourself [
 	data := parsedJson
 ]
 
+{ #category : #accessing }
+SteamData >> priceData [
+
+	^ data at: 'price_overview' ifAbsent: (Dictionary newFromPairs: { 'initial'. 0. 'currency'. nil. 'discount_percent'. 0. 'final'. 0. })
+]
+
 { #category : #initialization }
 SteamData >> setId: aString [ 
 	| steamId|
