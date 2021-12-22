@@ -60,3 +60,14 @@ SteamDataTest >> testPriceData [
 	self assert: (ad1920  priceData includesKey: 'currency').
 	self assert: (game24010  priceData includesKey: 'currency')
 ]
+
+{ #category : #tests }
+SteamDataTest >> testType [
+
+	self assert: ad1920  type equals: #Ad.
+	self assert: demo2510  type equals: #Demo.
+	self assert: dlc1237830  type equals: #Dlc.
+	self assert: game24010  type equals: #Game.
+	self assert: mod1230  type equals: #Mod.
+	self assert: movie919 type equals: #Movie
+]

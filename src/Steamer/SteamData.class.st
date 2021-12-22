@@ -83,6 +83,20 @@ SteamData >> setId: aString [
 	id := steamId identifier
 ]
 
+{ #category : #accessing }
+SteamData >> type [
+
+	| typeTable |
+	typeTable := Dictionary newFrom: { 
+			             ('advertising' -> #Ad).
+			             ('demo' -> #Demo).
+			             ('dlc' -> #Dlc).
+			             ('game' -> #Game).
+			             ('mod' -> #Mod).
+			             ('movie' -> #Movie) }.
+	^ typeTable at: (self data at: 'type')
+]
+
 { #category : #initialization }
 SteamData >> updateYourself [
 
