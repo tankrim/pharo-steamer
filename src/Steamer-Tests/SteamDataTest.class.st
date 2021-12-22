@@ -5,8 +5,12 @@ Class {
 	#name : #SteamDataTest,
 	#superclass : #TestCase,
 	#classVars : [
-		'good',
-		'gratisGood'
+		'ad1920',
+		'demo2510',
+		'dlc1237830',
+		'game24010',
+		'mod1230',
+		'movie919'
 	],
 	#category : #'Steamer-Tests'
 }
@@ -15,8 +19,12 @@ Class {
 SteamDataTest >> setUp [
 
 	super setUp.
-	good := SteamData newWithId: '10'.
-	gratisGood := SteamData newWithId: '1920'
+	ad1920 := SteamData newWithId: '1920'.
+	demo2510 := SteamData newWithId: '2510'.
+	dlc1237830 := SteamData newWithId: '1237830'.
+	game24010 := SteamData newWithId: '24010'.
+	mod1230 := SteamData newWithId: '1230'.
+	movie919 := SteamData newWithId: '919'
 ]
 
 { #category : #tests }
@@ -29,25 +37,26 @@ SteamDataTest >> testCreating [
 { #category : #tests }
 SteamDataTest >> testData [
 
-	self assert: (good data includesKey: 'name')
+	self assert: (ad1920  data includesKey: 'name')
 ]
 
 { #category : #tests }
 SteamDataTest >> testId [
 
-	self assert: good id equals: '10'
+	self assert: ad1920 id equals: '1920'
 ]
 
 { #category : #tests }
 SteamDataTest >> testJson [
 
 	self
-		assert: (good json copyFrom: 1 to: 15)
-		equals: '{"10":{"success'
+		assert: (ad1920 json copyFrom: 1 to: 15)
+		equals: '{"1920":{"succe'
 ]
 
 { #category : #tests }
 SteamDataTest >> testPriceData [
-	self assert: (good priceData includesKey: 'currency').
-	self assert: (gratisGood  priceData includesKey: 'currency')
+
+	self assert: (ad1920  priceData includesKey: 'currency').
+	self assert: (game24010  priceData includesKey: 'currency')
 ]
