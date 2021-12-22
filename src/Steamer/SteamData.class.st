@@ -61,8 +61,7 @@ SteamData >> json [
 SteamData >> parseYourself [
 
 	| initial parsedJson |
-	json isRecognizedSteamJson ifFalse: [ 
-		self error: 'Unrecognized data' ].
+	json isRecognizedSteamJson ifFalse: [ UnrecognizedSteamId signalWith: self id].
 	initial := (STON fromString: self json) at: self id.
 	parsedJson := initial at: 'data'.
 	data := parsedJson
