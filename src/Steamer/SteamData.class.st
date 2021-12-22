@@ -1,5 +1,5 @@
 Class {
-	#name : #SteamJson,
+	#name : #SteamData,
 	#superclass : #Object,
 	#instVars : [
 		'id',
@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #accessing }
-SteamJson class >> baseUrl [
+SteamData class >> baseUrl [
 
 	BaseUrl ifNil: [ 
 		BaseUrl := 'https://store.steampowered.com/api/appdetails?appids=' ].
@@ -21,7 +21,7 @@ SteamJson class >> baseUrl [
 ]
 
 { #category : #'instance creation' }
-SteamJson class >> newWithId: aString [
+SteamData class >> newWithId: aString [
 
 	^ self basicNew
 		  setId: aString;
@@ -30,12 +30,12 @@ SteamJson class >> newWithId: aString [
 ]
 
 { #category : #accessing }
-SteamJson >> data [
+SteamData >> data [
 	^ data
 ]
 
 { #category : #'as yet unclassified' }
-SteamJson >> fetchYourself [
+SteamData >> fetchYourself [
 
 	| fetchedJson |
 	fetchedJson := ZnClient new
@@ -48,18 +48,18 @@ SteamJson >> fetchYourself [
 ]
 
 { #category : #accessing }
-SteamJson >> id [
+SteamData >> id [
 	^ id
 ]
 
 { #category : #accessing }
-SteamJson >> json [
+SteamData >> json [
 
 	^ json
 ]
 
 { #category : #'as yet unclassified' }
-SteamJson >> parseYourself [
+SteamData >> parseYourself [
 
 	| initial parsedJson |
 	json isRecognizedSteamJson ifFalse: [ 
@@ -70,7 +70,7 @@ SteamJson >> parseYourself [
 ]
 
 { #category : #initialization }
-SteamJson >> setId: aString [ 
+SteamData >> setId: aString [ 
 	| steamId|
 	steamId := SteamId newFromString: aString.
 	steamId isWellFormed ifFalse: [ self error: 'Not a well-formed id: ', aString ].
@@ -78,13 +78,13 @@ SteamJson >> setId: aString [
 ]
 
 { #category : #initialization }
-SteamJson >> updateYourself [
+SteamData >> updateYourself [
 
 	self fetchYourself.
 	self parseYourself
 ]
 
 { #category : #'as yet unclassified' }
-SteamJson >> url [
+SteamData >> url [
 ^ self class baseUrl, self id
 ]

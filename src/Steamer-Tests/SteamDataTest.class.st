@@ -2,39 +2,39 @@
 A SteamJsonTest is a test class for testing the behavior of SteamJson
 "
 Class {
-	#name : #SteamJsonTest,
+	#name : #SteamDataTest,
 	#superclass : #TestCase,
 	#category : #'Steamer-Tests'
 }
 
 { #category : #tests }
-SteamJsonTest >> testCreating [
+SteamDataTest >> testCreating [
 
-	self should: [ SteamJson newWithId: '01' ] raise: Error
+	self should: [ SteamData newWithId: '01' ] raise: Error
 ]
 
 { #category : #tests }
-SteamJsonTest >> testData [
+SteamDataTest >> testData [
 
 	| instance |
-	instance := SteamJson newWithId: '10'.
+	instance := SteamData newWithId: '10'.
 	instance fetchYourself.
 	instance parseYourself.
 	self assert: (instance data includesKey: 'name')
 ]
 
 { #category : #tests }
-SteamJsonTest >> testId [
+SteamDataTest >> testId [
 
 	| instance |
-	instance := SteamJson newWithId: '10'.
+	instance := SteamData newWithId: '10'.
 	self assert: instance id equals: '10'.
 ]
 
 { #category : #tests }
-SteamJsonTest >> testJson [
+SteamDataTest >> testJson [
 
 	| instance |
-	instance := (SteamJson newWithId: '10') fetchYourself.
+	instance := (SteamData newWithId: '10') fetchYourself.
 	self assert: (instance json copyFrom: 1 to: 15) equals: '{"10":{"success'
 ]
