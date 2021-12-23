@@ -39,3 +39,9 @@ SteamArtifact >> printOn: aStream [
 SteamArtifact >> setSteamData: aSteamData [ 
 	steamData := aSteamData .
 ]
+
+{ #category : #accessing }
+SteamArtifact >> title [
+
+	^ steamData data at: 'name'
+]
