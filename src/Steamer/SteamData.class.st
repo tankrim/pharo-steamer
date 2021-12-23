@@ -109,7 +109,7 @@ SteamData >> type [
 	^ typeTable at: (self data at: 'type')
 ]
 
-{ #category : #initialization }
+{ #category : #updating }
 SteamData >> updateYourself [
 
 	self fetchYourself.
