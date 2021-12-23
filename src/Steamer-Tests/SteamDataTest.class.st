@@ -19,12 +19,13 @@ Class {
 SteamDataTest >> setUp [
 
 	super setUp.
-	ad1920 := SteamData newWithId: '1920'.
-	demo2510 := SteamData newWithId: '2510'.
-	dlc1237830 := SteamData newWithId: '1237830'.
-	game24010 := SteamData newWithId: '24010'.
-	mod1230 := SteamData newWithId: '1230'.
-	movie919 := SteamData newWithId: '919'
+	ad1920 := SteamCannedData steamDataForAd1920.
+	demo2510 := SteamCannedData steamDataForDemo2510.
+	dlc1237830 := SteamCannedData steamDataForDlc1237830.
+	game24010 := SteamCannedData steamDataForGame24010.
+	mod1230 := SteamCannedData steamDataForMod1230.
+	movie919 := SteamCannedData steamDataForMovie919
+
 ]
 
 { #category : #tests }
@@ -38,6 +39,17 @@ SteamDataTest >> testCreating [
 SteamDataTest >> testData [
 
 	self assert: (ad1920  data includesKey: 'name')
+]
+
+{ #category : #tests }
+SteamDataTest >> testDiscount [
+
+	self assert: ad1920 discount equals: 0.
+	self assert: demo2510 discount equals: 0.
+	self assert: dlc1237830 discount equals: 25.
+	self assert: game24010 discount equals: 60.
+	self assert: mod1230 discount equals: 0.
+	self assert: movie919 discount equals: 0
 ]
 
 { #category : #tests }
@@ -55,10 +67,32 @@ SteamDataTest >> testJson [
 ]
 
 { #category : #tests }
+SteamDataTest >> testPrice [
+
+	self assert: ad1920 price equals: 0.
+	self assert: demo2510 price equals: 0.
+	self assert: dlc1237830 price equals: 614.
+	self assert: game24010 price equals: 1199.
+	self assert: mod1230 price equals: 0.
+	self assert: movie919 price equals: 0
+]
+
+{ #category : #tests }
 SteamDataTest >> testPriceData [
 
 	self assert: (ad1920  priceData includesKey: 'currency').
 	self assert: (game24010  priceData includesKey: 'currency')
+]
+
+{ #category : #tests }
+SteamDataTest >> testTitle [
+
+	self assert: ad1920 title equals: 'Two Worlds'.
+	self assert: demo2510 title equals: 'Shadowgrounds Demo'.
+	self assert: dlc1237830 title equals: 'TWDSS: Tourist Edition Upgrade'.
+	self assert: game24010 title equals: 'Train Simulator 2022'.
+	self assert: mod1230 title equals: 'Mare Nostrum'.
+	self assert: movie919 title equals: 'Dark Messiah: Warrior'
 ]
 
 { #category : #tests }

@@ -6,18 +6,13 @@ Class {
 		'json',
 		'data'
 	],
-	#classVars : [
-		'BaseUrl'
-	],
 	#category : #Steamer
 }
 
 { #category : #accessing }
 SteamData class >> baseUrl [
 
-	BaseUrl ifNil: [ 
-		BaseUrl := 'https://store.steampowered.com/api/appdetails?appids=' ].
-	^ BaseUrl 
+^ 'https://store.steampowered.com/api/appdetails?appids='
 ]
 
 { #category : #'instance creation' }
@@ -32,6 +27,12 @@ SteamData class >> newWithId: aString [
 { #category : #accessing }
 SteamData >> data [
 	^ data
+]
+
+{ #category : #accessing }
+SteamData >> discount [
+
+	^ self priceData at: 'discount_percent'
 ]
 
 { #category : #private }
@@ -68,6 +69,12 @@ SteamData >> parseYourself [
 ]
 
 { #category : #accessing }
+SteamData >> price [
+
+	^ self priceData at: 'final'
+]
+
+{ #category : #accessing }
 SteamData >> priceData [
 
 	^ data at: 'price_overview' ifAbsent: (Dictionary newFrom:
@@ -81,6 +88,11 @@ SteamData >> setId: aString [
 	steamId := SteamId newFromString: aString.
 	steamId isWellFormed ifFalse: [ MalformedSteamId signalWith: aString ].
 	id := steamId identifier
+]
+
+{ #category : #accessing }
+SteamData >> title [
+^ data at: 'name'
 ]
 
 { #category : #accessing }
