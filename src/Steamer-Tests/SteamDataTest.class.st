@@ -4,7 +4,7 @@ A SteamJsonTest is a test class for testing the behavior of SteamJson
 Class {
 	#name : #SteamDataTest,
 	#superclass : #TestCase,
-	#classVars : [
+	#instVars : [
 		'ad1920',
 		'demo2510',
 		'dlc1237830',
