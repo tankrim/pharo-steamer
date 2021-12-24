@@ -38,7 +38,12 @@ SteamDataTest >> testCreating [
 { #category : #tests }
 SteamDataTest >> testData [
 
-	self assert: (ad1920  data includesKey: 'name')
+	self assert: (ad1920 data includesKey: 'name').
+	self assert: (demo2510 data includesKey: 'name').
+	self assert: (dlc1237830 data includesKey: 'name').
+	self assert: (game24010 data includesKey: 'name').
+	self assert: (mod1230 data includesKey: 'name').
+	self assert: (movie919 data includesKey: 'name')
 ]
 
 { #category : #tests }
@@ -55,7 +60,12 @@ SteamDataTest >> testDiscount [
 { #category : #tests }
 SteamDataTest >> testId [
 
-	self assert: ad1920 id equals: '1920'
+	self assert: ad1920 id equals: '1920'.
+	self assert: demo2510 id equals: '2510'.
+	self assert: dlc1237830 id equals: '1237830'.
+	self assert: game24010 id equals: '24010'.
+	self assert: mod1230 id equals: '1230'.
+	self assert: movie919 id equals: '919'
 ]
 
 { #category : #tests }
@@ -80,8 +90,13 @@ SteamDataTest >> testPrice [
 { #category : #tests }
 SteamDataTest >> testPriceData [
 
-	self assert: (ad1920  priceData includesKey: 'currency').
-	self assert: (game24010  priceData includesKey: 'currency')
+	self assert: (ad1920 priceData includesKey: 'currency').
+	self assert: (demo2510  priceData includesKey: 'currency').
+		self assert: (dlc1237830  priceData includesKey: 'currency').
+	self assert: (game24010 priceData includesKey: 'currency').
+	self assert: (mod1230  priceData includesKey: 'currency').
+		self assert: (movie919  priceData includesKey: 'currency').
+
 ]
 
 { #category : #tests }
