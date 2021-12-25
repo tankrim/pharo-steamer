@@ -100,6 +100,18 @@ SteamData >> setId: aString [
 ]
 
 { #category : #accessing }
+SteamData >> timestamp [
+
+	^ timestamp
+]
+
+{ #category : #accessing }
+SteamData >> timestamp: anObject [
+
+	timestamp := anObject
+]
+
+{ #category : #accessing }
 SteamData >> title [
 ^ data at: 'name'
 ]
@@ -122,7 +134,8 @@ SteamData >> type [
 SteamData >> updateYourself [
 
 	self fetchYourself.
-	self parseYourself
+	self parseYourself.
+	self timestamp: DateAndTime now
 ]
 
 { #category : #private }

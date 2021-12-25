@@ -5,6 +5,7 @@ Class {
 		'discount',
 		'id',
 		'price',
+		'timestamp',
 		'title',
 		'url'
 	],
@@ -25,6 +26,7 @@ SteamArtifact class >> newWithId: aString [
 		  price: steamData price;
 		  discount: steamData discount;
 		  url: 'https://store.steampowered.com/app/' , aString;
+		  timestamp: steamData timestamp;
 		  yourself
 ]
 
@@ -71,6 +73,18 @@ SteamArtifact >> printOn: aStream [
 	aStream
 		nextPutAll: ' id: ';
 		print: self id
+]
+
+{ #category : #accessing }
+SteamArtifact >> timestamp [
+
+	^ timestamp
+]
+
+{ #category : #accessing }
+SteamArtifact >> timestamp: anObject [
+
+	timestamp := anObject
 ]
 
 { #category : #accessing }

@@ -62,6 +62,25 @@ SteamArtifactTest >> testPrice [
 ]
 
 { #category : #tests }
+SteamArtifactTest >> testTimestamp [
+
+	self assert: ad1920 timestamp printString equals: '2021-12-25T20:18:05.235259+01:00'.
+	self
+		assert: demo2510 timestamp printString
+		equals: '2021-12-25T20:18:05.235259+01:00'.
+	self
+		assert: dlc1237830 timestamp printString
+		equals: '2021-12-25T20:18:05.235259+01:00'.
+	self
+		assert: game24010 timestamp printString
+		equals: '2021-12-25T20:18:05.235259+01:00'.
+	self assert: mod1230 timestamp printString equals: '2021-12-25T20:18:05.235259+01:00'.
+	self
+		assert: movie919 timestamp printString
+		equals: '2021-12-25T20:18:05.235259+01:00'
+]
+
+{ #category : #tests }
 SteamArtifactTest >> testTitle [
 
 	self assert: ad1920 title equals: 'Two Worlds'.
