@@ -104,12 +104,13 @@ SteamArtifact >> updateYourself [
 
 	| steamData |
 	steamData := SteamData newWithId: self id.
-		  self id: steamData id.
-		  self title: steamData title.
-		  self price: steamData price.
-		  self discount: steamData discount.
-		  self url: 'https://store.steampowered.com/app/' , self id.
-		  ^ self
+	self id: steamData id.
+	self title: steamData title.
+	self price: steamData price.
+	self discount: steamData discount.
+	self url: 'https://store.steampowered.com/app/' , self id.
+	self timestamp: steamData timestamp.
+	^ self
 ]
 
 { #category : #accessing }
