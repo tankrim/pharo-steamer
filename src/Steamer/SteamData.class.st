@@ -3,8 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'id',
+		'data',
 		'json',
-		'data'
+		'timestamp'
 	],
 	#category : #Steamer
 }
@@ -36,14 +37,23 @@ SteamData >> discount [
 ]
 
 { #category : #private }
+SteamData >> fetchJson [
+
+	^ ZnClient new
+		  enforceAcceptContentType: true;
+		  accept: ZnMimeType applicationJson;
+		  get: self url
+]
+
+{ #category : #private }
 SteamData >> fetchYourself [
 
 	| fetchedJson |
-	fetchedJson := ZnClient new
-		               enforceAcceptContentType: true;
-		               accept: ZnMimeType applicationJson;
-		               get: self url.
-	fetchedJson isWellFormedSteamJson ifFalse: [ MalformedSteamJson signalWith: fetchedJson ].
+	fetchedJson := self fetchJson .
+	fetchedJson isWellFormedSteamJson ifFalse: [ 
+		MalformedSteamJson signalWith: fetchedJson ].
+	fetchedJson isRecognizedSteamJson ifFalse: [ 
+		UnrecognizedSteamId signalWith: self id ].
 	json := fetchedJson
 ]
 
@@ -62,7 +72,6 @@ SteamData >> json [
 SteamData >> parseYourself [
 
 	| initial parsedJson |
-	json isRecognizedSteamJson ifFalse: [ UnrecognizedSteamId signalWith: self id].
 	initial := (STON fromString: self json) at: self id.
 	parsedJson := initial at: 'data'.
 	data := parsedJson
