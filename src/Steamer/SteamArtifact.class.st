@@ -30,6 +30,16 @@ SteamArtifact class >> newWithId: aString [
 		  yourself
 ]
 
+{ #category : #comparing }
+SteamArtifact >> = anObject [
+
+	"Answer whether the receiver and anObject represent the same object."
+
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ id = anObject id
+]
+
 { #category : #accessing }
 SteamArtifact >> discount [
 
@@ -40,6 +50,14 @@ SteamArtifact >> discount [
 SteamArtifact >> discount: anObject [
 
 	discount := anObject
+]
+
+{ #category : #comparing }
+SteamArtifact >> hash [
+
+	"Answer an integer value that is related to the identity of the receiver."
+
+	^ id hash
 ]
 
 { #category : #accessing }
