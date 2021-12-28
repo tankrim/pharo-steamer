@@ -1,3 +1,43 @@
+"
+I am a common superclass for objects representing pieces of software avaiable on Steam.
+
+My subclasses represent different types of such software.
+
+I know my id, title, price (if any), discount (if any), and the url at which I can be looked up on Steam; and I know when that data was created.
+
+I also know how to update myself.
+
+Instances of me can be compared; at the moment two instances of me are considered equal if they have the same id.
+
+I collaborate with `SteamData` in creation and updating of myself. 
+
+To create an instance of me, do:
+
+`SteamArtifact newWithId: '10'.`
+
+Example:
+```
+| sa |
+sa := SteamArtifact newWithId: '10'.
+sa id. ""'10'""
+sa title. ""'Counter-Strike'"" 
+sa price. ""163""
+sa discount. ""80""
+sa timestamp. ""2021-12-28T18:49:23.261663+01:00"".
+sa url.  ""'https://store.steampowered.com/app/10'""
+sa updateYourself. ""The same object with fresh data.""
+```
+
+Internal Representation and Key Implementation Points.
+
+    Instance Variables
+	discount:		<Integer>
+	id:		<String>
+	price:		<Integer>
+	timestamp:		<DateAndTime>
+	title:		<String>
+	url:		<String>
+"
 Class {
 	#name : #SteamArtifact,
 	#superclass : #Object,
