@@ -1,3 +1,6 @@
+"
+I am a common superclass for errors in Steamer operations.
+"
 Class {
 	#name : #SteamerError,
 	#superclass : #Error,
