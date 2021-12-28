@@ -1,3 +1,47 @@
+"
+I am data on one piece of software from Steam.
+
+In particular I know which type of Steam software I represent; its title; its price (if any); and its discount (if any). I also know when I was successfully created.
+
+I know how to update myself.
+
+I collaborate with `String` in determining the well-formedness of my json.
+
+I collaborate with `SteamId` in determining the well-formedness of the id with which I am created.
+
+If the id with which I am created is not well formed the error exception `MalformedSteamId` is signaled.
+
+If the json I fetch from Steam is not well formed the error exception `MalformedSteamJson` is signaled.
+
+If Steam has no knowledge of a piece of software with my id the error exception `UnrecognizedSteamId` is signaled.
+
+To create an instance of me, do:
+
+```
+SteamData newWithId: '10'.
+```
+
+Example:
+
+```
+| sd |
+sd := SteamData newWithId: '10'.
+sd type. ""#Game""
+sd title. ""'Counter-Strike'""
+sd price. ""163""
+sd discount. ""80""
+sd timestamp. ""2021-12-28T17:55:59.840719+01:00""
+sd updateYourself. ""The same object with fresh data.""
+```
+
+Internal Representation and Key Implementation Points.
+
+    Instance Variables
+	id:		<SteamId>
+	data: <Dictionary>
+	json: <String>
+	timestamp: <DateAndTime>
+"
 Class {
 	#name : #SteamData,
 	#superclass : #Object,
