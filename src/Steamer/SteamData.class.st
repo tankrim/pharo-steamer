@@ -93,7 +93,9 @@ SteamData >> fetchJson [
 SteamData >> fetchYourself [
 
 	| fetchedJson |
-	fetchedJson := self fetchJson .
+	fetchedJson := self fetchJson.
+		fetchedJson isString  ifFalse: [ 
+		MalformedSteamJson signalWith: fetchedJson ].
 	fetchedJson isWellFormedSteamJson ifFalse: [ 
 		MalformedSteamJson signalWith: fetchedJson ].
 	fetchedJson isRecognizedSteamJson ifFalse: [ 
