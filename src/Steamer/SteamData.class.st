@@ -90,10 +90,16 @@ SteamData >> discount [
 { #category : #private }
 SteamData >> fetchJson [
 
-	^ ZnClient new
+| fetchedJson |
+	fetchedJson := ZnClient new
 		  enforceAcceptContentType: true;
 		  accept: ZnMimeType applicationJson;
-		  get: self url
+		  get: self url.
+	fetchedJson isString ifFalse: [ 
+		MalformedSteamJson signalWith: fetchedJson ].
+	fetchedJson isWellFormedSteamJson ifFalse: [ 
+		MalformedSteamJson signalWith: fetchedJson ].
+	^ fetchedJson
 ]
 
 { #category : #private }
@@ -101,10 +107,6 @@ SteamData >> fetchYourself [
 
 	| fetchedJson |
 	fetchedJson := self fetchJson.
-		fetchedJson isString  ifFalse: [ 
-		MalformedSteamJson signalWith: fetchedJson ].
-	fetchedJson isWellFormedSteamJson ifFalse: [ 
-		MalformedSteamJson signalWith: fetchedJson ].
 	fetchedJson isRecognizedSteamJson ifFalse: [ 
 		UnrecognizedSteamId signalWith: self id ].
 	json := fetchedJson
