@@ -1,7 +1,7 @@
 "
 I am data on one piece of software from Steam.
 
-In particular I know which type of Steam software I represent; its title; its price (if any); and its discount (if any). I also know when I was successfully created.
+In particular I know which type of Steam software I represent; its title; its currency (if any); its price (if any); and its discount (if any). I also know when I was successfully created.
 
 I know how to update myself.
 
@@ -28,6 +28,7 @@ Example:
 sd := SteamData newWithId: '10'.
 sd type. ""#Game""
 sd title. ""'Counter-Strike'""
+sd currency. ""'EUR'""
 sd price. ""163""
 sd discount. ""80""
 sd timestamp. ""2021-12-28T17:55:59.840719+01:00""

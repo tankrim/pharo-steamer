@@ -3,7 +3,7 @@ I am a common superclass for objects representing pieces of software avaiable on
 
 My subclasses represent different types of such software.
 
-I know my id, title, price (if any), discount (if any), and the url at which I can be looked up on Steam; and I know when that data was created.
+I know my id, title, currency (if any), price (if any), discount (if any), and the url at which I can be looked up on Steam; and I know when that data was created.
 
 I also know how to update myself.
 
@@ -21,6 +21,7 @@ Example:
 sa := SteamArtifact newWithId: '10'.
 sa id. ""'10'""
 sa title. ""'Counter-Strike'"" 
+sa currency. ""'EUR'""
 sa price. ""163""
 sa discount. ""80""
 sa timestamp. ""2021-12-28T18:49:23.261663+01:00"".
@@ -33,6 +34,7 @@ Internal Representation and Key Implementation Points.
     Instance Variables
 	discount:		<Integer>
 	id:		<String>
+	currency:	<String>
 	price:		<Integer>
 	timestamp:		<DateAndTime>
 	title:		<String>
