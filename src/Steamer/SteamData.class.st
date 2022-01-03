@@ -66,7 +66,7 @@ SteamData class >> newWithId: aString [
 
 	^ self basicNew
 		  setId: aString;
-		  updateYourself;
+		  initializeFromSteam;
 		  yourself
 ]
 
@@ -87,34 +87,54 @@ SteamData >> discount [
 	^ self priceData at: 'discount_percent'
 ]
 
-{ #category : #private }
+{ #category : #fetching }
 SteamData >> fetchJson [
 
-| fetchedJson |
-	fetchedJson := ZnClient new
+	json := ZnClient new
 		  enforceAcceptContentType: true;
 		  accept: ZnMimeType applicationJson;
-		  get: self url.
-	fetchedJson isString ifFalse: [ 
-		MalformedSteamJson signalWith: fetchedJson ].
-	fetchedJson isWellFormedSteamJson ifFalse: [ 
-		MalformedSteamJson signalWith: fetchedJson ].
-	^ fetchedJson
+		  get: self url
 ]
 
-{ #category : #private }
-SteamData >> fetchYourself [
+{ #category : #testing }
+SteamData >> hasRecognizedJson [
 
-	| fetchedJson |
-	fetchedJson := self fetchJson.
-	fetchedJson isRecognizedSteamJson ifFalse: [ 
-		UnrecognizedSteamId signalWith: self id ].
-	json := fetchedJson
+	json isString ifFalse: [ ^ false ].
+	^ json isRecognizedSteamJson 
+]
+
+{ #category : #testing }
+SteamData >> hasWellFormedId [
+
+	id isString ifFalse: [ ^ false ].
+	^ id isWellFormedSteamId 
+]
+
+{ #category : #testing }
+SteamData >> hasWellFormedJson [
+
+	json isString ifFalse: [ ^ false ].
+	^ json isWellFormedSteamJson 
 ]
 
 { #category : #accessing }
 SteamData >> id [
 	^ id
+]
+
+{ #category : #initialization }
+SteamData >> initializeFromSteam [
+
+	self hasWellFormedId ifFalse: [ MalformedSteamId signalWith: self id ].
+	self fetchJson.
+
+	self hasWellFormedJson ifFalse: [ 
+		MalformedSteamJson signalWith: self json ].
+	self hasRecognizedJson ifFalse: [ 
+		UnrecognizedSteamId signalWith: self id ].
+
+	self parseJson.
+	self timestamp: DateAndTime now
 ]
 
 { #category : #accessing }
@@ -123,8 +143,8 @@ SteamData >> json [
 	^ json
 ]
 
-{ #category : #private }
-SteamData >> parseYourself [
+{ #category : #parsing }
+SteamData >> parseJson [
 
 	| initial parsedJson |
 	initial := (STON fromString: self json) at: self id.
@@ -149,11 +169,16 @@ SteamData >> priceData [
 ]
 
 { #category : #initialization }
+SteamData >> reInitializeFromSteam [
+
+	self initializeFromSteam 
+]
+
+{ #category : #initialization }
 SteamData >> setId: aString [
 
 	| steamId |
 	steamId := SteamId newFromString: aString.
-	steamId isWellFormed ifFalse: [ MalformedSteamId signalWith: aString ].
 	id := steamId identifier
 ]
 
@@ -186,14 +211,6 @@ SteamData >> type [
 			             ('mod' -> #Mod).
 			             ('movie' -> #Movie) }.
 	^ typeTable at: (self data at: 'type')
-]
-
-{ #category : #updating }
-SteamData >> updateYourself [
-
-	self fetchYourself.
-	self parseYourself.
-	self timestamp: DateAndTime now
 ]
 
 { #category : #private }

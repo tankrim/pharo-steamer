@@ -138,6 +138,21 @@ SteamArtifact >> id: anObject [
 	id := anObject
 ]
 
+{ #category : #initialization }
+SteamArtifact >> initializeFromSteam [
+
+	| steamData |
+	steamData := SteamData newWithId: self id.
+	self currency: steamData currency.
+	self discount: steamData discount.
+	self id: steamData id.
+	self timestamp: steamData timestamp.
+	self title: steamData title.
+	self price: steamData price.
+	self url: 'https://store.steampowered.com/app/' , self id.
+	^ self
+]
+
 { #category : #accessing }
 SteamArtifact >> price [
 
@@ -157,6 +172,12 @@ SteamArtifact >> printOn: aStream [
 	aStream
 		nextPutAll: ' id: ';
 		print: self id
+]
+
+{ #category : #initialization }
+SteamArtifact >> reInitializeFromSteam [
+
+self initializeFromSteam 
 ]
 
 { #category : #accessing }
@@ -181,21 +202,6 @@ SteamArtifact >> title [
 SteamArtifact >> title: anObject [
 
 	title := anObject
-]
-
-{ #category : #updating }
-SteamArtifact >> updateYourself [
-
-	| steamData |
-	steamData := SteamData newWithId: self id.
-	self currency: steamData currency.
-	self discount: steamData discount.
-	self id: steamData id.
-	self timestamp: steamData timestamp.
-	self title: steamData title.
-	self price: steamData price.
-	self url: 'https://store.steampowered.com/app/' , self id.
-	^ self
 ]
 
 { #category : #accessing }
