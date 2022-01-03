@@ -51,6 +51,17 @@ SteamArtifactTest >> testDiscount [
 ]
 
 { #category : #tests }
+SteamArtifactTest >> testDisplayPrice [
+
+	self assert: ad1920 displayPrice equals: '0.0'.
+	self assert: demo2510 displayPrice equals: '0.0'.
+	self assert: dlc1237830 displayPrice equals: 'EUR 6.14'.
+	self assert: game24010 displayPrice equals: 'EUR 11.99'.
+	self assert: mod1230 displayPrice equals: '0.0'.
+	self assert: movie919 displayPrice equals: '0.0'
+]
+
+{ #category : #tests }
 SteamArtifactTest >> testId [
 
 	self assert: ad1920 id equals: '1920'.

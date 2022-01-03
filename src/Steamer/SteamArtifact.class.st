@@ -106,6 +106,16 @@ SteamArtifact >> discount: anObject [
 	discount := anObject
 ]
 
+{ #category : #displaying }
+SteamArtifact >> displayPrice [
+
+	| priceForDisplay |
+	priceForDisplay := (self price / 100) asFloat printString.
+	self currency
+		ifNotEmpty: [ ^ self currency , ' ' , priceForDisplay ]
+		ifEmpty: [  ^priceForDisplay ]
+]
+
 { #category : #comparing }
 SteamArtifact >> hash [
 
