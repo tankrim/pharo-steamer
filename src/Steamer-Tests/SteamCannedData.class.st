@@ -1,3 +1,8 @@
+"
+I provide canned data for testing of `SteamData` and `SteamArtifact`.
+
+My class knows how to instantiate some instances of those classes.
+"
 Class {
 	#name : #SteamCannedData,
 	#superclass : #Object,
