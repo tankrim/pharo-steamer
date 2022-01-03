@@ -42,6 +42,7 @@ Class {
 	#name : #SteamArtifact,
 	#superclass : #Object,
 	#instVars : [
+		'currency',
 		'discount',
 		'id',
 		'price',
@@ -61,12 +62,13 @@ SteamArtifact class >> newWithId: aString [
 	className := self class environment at: #Steam , type.
 
 	^ className basicNew
-		  id: steamData id;
-		  title: steamData title;
-		  price: steamData price;
+	     currency: steamData currency;
 		  discount: steamData discount;
-		  url: 'https://store.steampowered.com/app/' , aString;
+		  id: steamData id;
+		  price: steamData price;
 		  timestamp: steamData timestamp;
+		  title: steamData title;
+		  url: 'https://store.steampowered.com/app/' , aString;
 		  yourself
 ]
 
@@ -78,6 +80,18 @@ SteamArtifact >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
 	^ id = anObject id
+]
+
+{ #category : #accessing }
+SteamArtifact >> currency [
+
+	^ currency
+]
+
+{ #category : #accessing }
+SteamArtifact >> currency: anObject [
+
+	currency := anObject
 ]
 
 { #category : #accessing }
@@ -162,12 +176,13 @@ SteamArtifact >> updateYourself [
 
 	| steamData |
 	steamData := SteamData newWithId: self id.
+	self currency: steamData currency.
+	self discount: steamData discount.
 	self id: steamData id.
+	self timestamp: steamData timestamp.
 	self title: steamData title.
 	self price: steamData price.
-	self discount: steamData discount.
 	self url: 'https://store.steampowered.com/app/' , self id.
-	self timestamp: steamData timestamp.
 	^ self
 ]
 

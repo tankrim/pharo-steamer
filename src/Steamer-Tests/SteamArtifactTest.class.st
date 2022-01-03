@@ -29,6 +29,17 @@ SteamArtifactTest >> setUp [
 ]
 
 { #category : #tests }
+SteamArtifactTest >> testCurrency [
+
+	self assert: ad1920 currency equals: ''.
+	self assert: demo2510 currency equals: ''.
+	self assert: dlc1237830 currency equals: 'EUR'.
+	self assert: game24010 currency equals: 'EUR'.
+	self assert: mod1230 currency equals: ''.
+	self assert: movie919 currency equals: ''
+]
+
+{ #category : #tests }
 SteamArtifactTest >> testDiscount [
 
 	self assert: ad1920 discount equals: 0.
@@ -64,20 +75,20 @@ SteamArtifactTest >> testPrice [
 { #category : #tests }
 SteamArtifactTest >> testTimestamp [
 
-	self assert: ad1920 timestamp printString equals: '2021-12-25T20:18:05.235259+01:00'.
+	self assert: ad1920 timestamp printString equals: '2022-01-03T02:13:33.306127+01:00'.
 	self
 		assert: demo2510 timestamp printString
-		equals: '2021-12-25T20:18:05.235259+01:00'.
+		equals: '2022-01-03T02:14:38.440903+01:00'.
 	self
 		assert: dlc1237830 timestamp printString
-		equals: '2021-12-25T20:18:05.235259+01:00'.
+		equals: '2022-01-03T02:15:12.844627+01:00'.
 	self
 		assert: game24010 timestamp printString
-		equals: '2021-12-25T20:18:05.235259+01:00'.
-	self assert: mod1230 timestamp printString equals: '2021-12-25T20:18:05.235259+01:00'.
+		equals: '2022-01-03T02:15:50.189793+01:00'.
+	self assert: mod1230 timestamp printString equals: '2022-01-03T02:16:30.262124+01:00'.
 	self
 		assert: movie919 timestamp printString
-		equals: '2021-12-25T20:18:05.235259+01:00'
+		equals: '2022-01-03T02:17:03.839624+01:00'
 ]
 
 { #category : #tests }

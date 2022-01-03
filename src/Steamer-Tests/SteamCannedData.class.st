@@ -9,8 +9,7 @@ SteamCannedData class >> steamArtifactForAd1920 [
 
 	" STON toString: (SteamArtifact newWithId: '1920'). "
 
-	^ STON fromString:
-		  'SteamAd{#discount:0,#id:''1920'',#price:0,#title:''Two Worlds'',#url:''https://store.steampowered.com/app/1920'',#timestamp:DateAndTime[''2021-12-25T20:18:05.235259+01:00'']}'
+	^ STON fromString: 'SteamAd{#currency:'''',#discount:0,#id:''1920'',#price:0,#timestamp:DateAndTime[''2022-01-03T02:13:33.306127+01:00''],#title:''Two Worlds'',#url:''https://store.steampowered.com/app/1920''}'
 ]
 
 { #category : #'as yet unclassified' }
@@ -19,7 +18,7 @@ SteamCannedData class >> steamArtifactForDemo2510 [
 	" STON toString: (SteamArtifact newWithId: '2510'). "
 
 	^ STON fromString:
-		  'SteamDemo{#discount:0,#id:''2510'',#price:0,#title:''Shadowgrounds Demo'',#url:''https://store.steampowered.com/app/2510'',#timestamp:DateAndTime[''2021-12-25T20:18:05.235259+01:00'']}'
+		  'SteamDemo{#currency:'''',#discount:0,#id:''2510'',#price:0,#timestamp:DateAndTime[''2022-01-03T02:14:38.440903+01:00''],#title:''Shadowgrounds Demo'',#url:''https://store.steampowered.com/app/2510''}'
 ]
 
 { #category : #'as yet unclassified' }
@@ -28,7 +27,7 @@ SteamCannedData class >> steamArtifactForDlc1237830 [
 	" STON toString: (SteamArtifact newWithId: '1237830'). "
 
 	^ STON fromString:
-		  'SteamDlc{#discount:25,#id:''1237830'',#price:614,#title:''TWDSS: Tourist Edition Upgrade'',#url:''https://store.steampowered.com/app/1237830'',#timestamp:DateAndTime[''2021-12-25T20:18:05.235259+01:00'']}'
+		  'SteamDlc{#currency:''EUR'',#discount:25,#id:''1237830'',#price:614,#timestamp:DateAndTime[''2022-01-03T02:15:12.844627+01:00''],#title:''TWDSS: Tourist Edition Upgrade'',#url:''https://store.steampowered.com/app/1237830''}'
 ]
 
 { #category : #'as yet unclassified' }
@@ -37,7 +36,7 @@ SteamCannedData class >> steamArtifactForGame24010 [
 	" STON toString: (SteamArtifact newWithId: '24010'). "
 
 	^ STON fromString:
-		  'SteamGame{#discount:60,#id:''24010'',#price:1199,#title:''Train Simulator 2022'',#url:''https://store.steampowered.com/app/24010'',#timestamp:DateAndTime[''2021-12-25T20:18:05.235259+01:00'']}'
+		  'SteamGame{#currency:''EUR'',#discount:60,#id:''24010'',#price:1199,#timestamp:DateAndTime[''2022-01-03T02:15:50.189793+01:00''],#title:''Train Simulator 2022'',#url:''https://store.steampowered.com/app/24010''}'
 ]
 
 { #category : #'as yet unclassified' }
@@ -46,7 +45,7 @@ SteamCannedData class >> steamArtifactForMod1230 [
 	" STON toString: (SteamArtifact newWithId: '1230'). "
 
 	^ STON fromString:
-		  'SteamMod{#discount:0,#id:''1230'',#price:0,#title:''Mare Nostrum'',#url:''https://store.steampowered.com/app/1230'',#timestamp:DateAndTime[''2021-12-25T20:18:05.235259+01:00'']}'
+		  'SteamMod{#currency:'''',#discount:0,#id:''1230'',#price:0,#timestamp:DateAndTime[''2022-01-03T02:16:30.262124+01:00''],#title:''Mare Nostrum'',#url:''https://store.steampowered.com/app/1230''}'
 ]
 
 { #category : #'as yet unclassified' }
@@ -55,7 +54,7 @@ SteamCannedData class >> steamArtifactForMovie919 [
 	" STON toString: (SteamArtifact newWithId: '919'). "
 
 	^ STON fromString:
-		  'SteamMovie{#discount:0,#id:''919'',#price:0,#title:''Dark Messiah: Warrior'',#url:''https://store.steampowered.com/app/919'',#timestamp:DateAndTime[''2021-12-25T20:18:05.235259+01:00'']}'
+		  'SteamMovie{#currency:'''',#discount:0,#id:''919'',#price:0,#timestamp:DateAndTime[''2022-01-03T02:17:03.839624+01:00''],#title:''Dark Messiah: Warrior'',#url:''https://store.steampowered.com/app/919''}'
 ]
 
 { #category : #'as yet unclassified' }
