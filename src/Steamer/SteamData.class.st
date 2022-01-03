@@ -70,6 +70,12 @@ SteamData class >> newWithId: aString [
 ]
 
 { #category : #accessing }
+SteamData >> currency [
+
+	^ self priceData at: 'currency'
+]
+
+{ #category : #accessing }
 SteamData >> data [
 	^ data
 ]
@@ -132,8 +138,11 @@ SteamData >> price [
 { #category : #accessing }
 SteamData >> priceData [
 
-	^ data at: 'price_overview' ifAbsent: (Dictionary newFrom:
-			   { 'initial'->0. 'currency'->nil. 'discount_percent'->0. 'final'->0 })
+	^ data at: 'price_overview' ifAbsent: (Dictionary newFrom: { 
+				   ('initial' -> 0).
+				   ('currency' -> '').
+				   ('discount_percent' -> 0).
+				   ('final' -> 0) })
 ]
 
 { #category : #initialization }
