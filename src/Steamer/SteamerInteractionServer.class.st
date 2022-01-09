@@ -72,28 +72,49 @@ SteamerInteractionServer >> okResponse [
 ]
 
 { #category : #private }
+SteamerInteractionServer >> processAdd: aString [
+
+	| id instruction |
+	instruction := aString splitOn: Character space.
+	id := instruction at: 2.
+	^ [ SteamerDatabase insertOrUpdateSteamArtifactWithId: id ] ensure: [ 
+		  TranscriptLogger new runDuring: [ 
+			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
+]
+
+{ #category : #private }
+SteamerInteractionServer >> processDelete: aString [
+
+	| id instruction |
+	instruction := aString splitOn: Character space.
+	id := instruction at: 2.
+	^ [ SteamerDatabase deleteSteamArtifactWithId: id ] ensure: [ 
+		  TranscriptLogger new runDuring: [ 
+			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
+]
+
+{ #category : #private }
 SteamerInteractionServer >> processMessage: aString [
 
 	TranscriptLogger new runDuring: [ 
 		StringSignal emit: '[Steamer] Processing: ' , aString ].
 
-	(aString matchesRegex: 'add .+') ifTrue: [ 
-		| instruction id |
-		instruction := aString splitOn: Character space.
-		id := instruction at: 2.
-		^ [SteamerDatabase insertOrUpdateSteamArtifactWithId: id] ensure: [ 	TranscriptLogger new runDuring: [ 
-		StringSignal emit:
-			'[Steamer] Processed: ', aString ] ] ].
+	(aString matchesRegex: '^add .+') ifTrue: [ 
+		^ self processAdd: aString ].
 
-	(aString matchesRegex: 'delete .+') ifTrue: [ 
-		| instruction id |
-		instruction := aString splitOn: Character space.
-		id := instruction at: 2.
-		^ SteamerDatabase deleteSteamArtifactWithId: id ].
+	(aString matchesRegex: '^delete .+') ifTrue: [ 
+		^ self processDelete: aString ].
 
-	(aString matchesRegex: 'updateAll') ifTrue: [ 
-		SteamerDatabase selectAllSteamArtifacts.
-		^ SteamerDatabase updateAllSteamArtifacts ]
+	(aString matchesRegex: '^updateAll') ifTrue: [ 
+		^ self processUpdateAll: aString ]
+]
+
+{ #category : #private }
+SteamerInteractionServer >> processUpdateAll: aString [
+
+	^ [ SteamerDatabase updateAllSteamArtifacts ] ensure: [ 
+		  TranscriptLogger new runDuring: [ 
+			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
 ]
 
 { #category : #private }
