@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'connectionSocket',
 		'isRunning',
-		'isRunningLock'
+		'isRunningLock',
+		'logger'
 	],
 	#category : #Steamer
 }
@@ -32,9 +33,11 @@ SteamerInteractionServer >> handleError: anError [
 
 { #category : #initialization }
 SteamerInteractionServer >> initialize [
-super initialize.
-isRunningLock := Mutex new.
-self isRunning: false
+
+	super initialize.
+	logger := TranscriptLogger new.
+	isRunningLock := Mutex new.
+	self isRunning: false
 ]
 
 { #category : #private }
@@ -85,7 +88,7 @@ SteamerInteractionServer >> log: aString with: anObject [
 { #category : #private }
 SteamerInteractionServer >> logger [
 
-	^ TranscriptLogger new
+	^ logger
 ]
 
 { #category : #private }
