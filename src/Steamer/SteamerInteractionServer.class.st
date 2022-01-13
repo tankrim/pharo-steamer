@@ -77,7 +77,7 @@ SteamerInteractionServer >> processAdd: aString [
 	| id instruction |
 	instruction := aString splitOn: Character space.
 	id := instruction at: 2.
-	^ [ SteamerDatabase insertOrUpdateSteamArtifactWithId: id ] ensure: [ 
+	^ [ SteamerDatabase uniqueInstance insertOrUpdateSteamArtifactWithId: id ] ensure: [ 
 		  TranscriptLogger new runDuring: [ 
 			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
 ]
@@ -88,7 +88,7 @@ SteamerInteractionServer >> processDelete: aString [
 	| id instruction |
 	instruction := aString splitOn: Character space.
 	id := instruction at: 2.
-	^ [ SteamerDatabase deleteSteamArtifactWithId: id ] ensure: [ 
+	^ [ SteamerDatabase uniqueInstance deleteSteamArtifactWithId: id ] ensure: [ 
 		  TranscriptLogger new runDuring: [ 
 			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
 ]
@@ -112,7 +112,7 @@ SteamerInteractionServer >> processMessage: aString [
 { #category : #private }
 SteamerInteractionServer >> processUpdateAll: aString [
 
-	^ [ SteamerDatabase updateAllSteamArtifacts ] ensure: [ 
+	^ [ SteamerDatabase uniqueInstance updateAllSteamArtifacts ] ensure: [ 
 		  TranscriptLogger new runDuring: [ 
 			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
 ]
@@ -133,7 +133,7 @@ SteamerInteractionServer >> start [
 	connectionSocket := Socket newTCP.
 	connectionSocket listenOn: 9999 backlogSize: 10.
 	[ self serve ] fork.
-SteamerDatabase createTableIfNeeded.
+	SteamerDatabase  uniqueInstance createTableIfNeeded.
 	TranscriptLogger new runDuring: [ 
 		StringSignal emit:
 			'[Steamer] InteractionServer listening on port 9999' ]
