@@ -105,8 +105,19 @@ SteamerInteractionServer >> processMessage: aString [
 	(aString matchesRegex: '^delete .+') ifTrue: [ 
 		^ self processDelete: aString ].
 
+	(aString matchesRegex: '^quit') ifTrue: [ 
+		^ self processQuit: aString ].
+	
 	(aString matchesRegex: '^updateAll') ifTrue: [ 
 		^ self processUpdateAll: aString ]
+]
+
+{ #category : #private }
+SteamerInteractionServer >> processQuit: aString [
+
+	^ [ self stop ] ensure: [ 
+		  TranscriptLogger new runDuring: [ 
+			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
 ]
 
 { #category : #private }
