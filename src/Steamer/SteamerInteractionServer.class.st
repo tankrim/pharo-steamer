@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #private }
+SteamerInteractionServer >> database [
+
+	^ SteamerDatabase uniqueInstance
+]
+
+{ #category : #private }
 SteamerInteractionServer >> errorResponse: anError [
 
 	^ 'NOTOK ', anError printString , String lf
@@ -95,10 +101,8 @@ SteamerInteractionServer >> processAdd: aString [
 	| id instruction |
 	instruction := aString splitOn: Character space.
 	id := instruction at: 2.
-	[ 
-	SteamerDatabase uniqueInstance insertOrUpdateSteamArtifactWithId: id ] 
-		ensure: [ 
-			self log: '[Steamer] Processed: ' with: aString ].
+	[ self database insertOrUpdateSteamArtifactWithId: id ] ensure: [ 
+		self log: '[Steamer] Processed: ' with: aString ].
 	^ self okResponse
 ]
 
@@ -108,9 +112,8 @@ SteamerInteractionServer >> processDelete: aString [
 	| id instruction |
 	instruction := aString splitOn: Character space.
 	id := instruction at: 2.
-	[ SteamerDatabase uniqueInstance deleteSteamArtifactWithId: id ] 
-		ensure: [ 
-			self log: '[Steamer] Processed: ' with: aString ].
+	[ self database deleteSteamArtifactWithId: id ] ensure: [ 
+		self log: '[Steamer] Processed: ' with: aString ].
 	^ self okResponse
 ]
 
@@ -144,8 +147,8 @@ SteamerInteractionServer >> processQuit: aString [
 { #category : #private }
 SteamerInteractionServer >> processUpdateAll: aString [
 
-	[ SteamerDatabase uniqueInstance updateAllSteamArtifacts ] ensure: [ 
-			self log: '[Steamer] Processed: ' with: aString].
+	[ self database updateAllSteamArtifacts ] ensure: [ 
+		self log: '[Steamer] Processed: ' with: aString ].
 	^ self okResponse
 ]
 
@@ -165,9 +168,8 @@ SteamerInteractionServer >> start [
 	connectionSocket := Socket newTCP.
 	connectionSocket listenOn: 9999 backlogSize: 10.
 	[ self serve ] fork.
-	SteamerDatabase uniqueInstance createTableIfNeeded.
-	self log:
-			'[Steamer] InteractionServer listening on port 9999'
+	self database createTableIfNeeded.
+	self log: '[Steamer] InteractionServer listening on port 9999'
 ]
 
 { #category : #api }
