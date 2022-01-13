@@ -72,15 +72,20 @@ isRunningLock critical: [ isRunning := aBoolean ]
 { #category : #private }
 SteamerInteractionServer >> log: aString [
 
-	TranscriptLogger new runDuring: [ 
-		StringSignal emit: aString ].
-
+	self logger runDuring: [ StringSignal emit: aString ]
 ]
 
 { #category : #private }
 SteamerInteractionServer >> log: aString with: anObject [
 
-	TranscriptLogger new runDuring: [ StringSignal emit: aString, anObject printString  ]
+	self logger runDuring: [ 
+		StringSignal emit: aString , anObject printString ]
+]
+
+{ #category : #private }
+SteamerInteractionServer >> logger [
+
+	^ TranscriptLogger new
 ]
 
 { #category : #private }
