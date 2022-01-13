@@ -27,90 +27,16 @@ Class {
 		'databaseSession',
 		'databaseFileName'
 	],
+	#classInstVars : [
+		'uniqueInstance'
+	],
 	#category : #Steamer
 }
 
-{ #category : #api }
-SteamerDatabase class >> createTableIfNeeded [
+{ #category : #'initialize-release' }
+SteamerDatabase class >> new [
 
-	| instance |
-	instance := self new.
-	self prepareInstance: instance.
-	[ 
-	[ instance session createTables ]
-		on: SQLite3Error
-		do: [ :ex | ex return: nil ] ] ensure: [ instance closeSession ]
-]
-
-{ #category : #api }
-SteamerDatabase class >> deleteAllSteamArtifacts [
-
-	| instance artifacts ids |
-	instance := self new.
-	self prepareInstance: instance.
-	artifacts := self selectAllSteamArtifacts.
-	ids := artifacts collect: [ :each | each id ].
-	^ self deleteSteamArtifactsWithIds: ids
-]
-
-{ #category : #api }
-SteamerDatabase class >> deleteSteamArtifactWithId: anId [
-
-	| instance |
-	instance := self new.
-	self prepareInstance: instance.
-	[ 
-	instance session inUnitOfWorkDo: [ 
-		| artifact |
-		artifact := instance session
-			            readOneOf: SteamArtifact
-			            where: [ :each | each id = anId ].
-		artifact ifNotNil: [ instance session delete: artifact ] ] ] 
-		ensure: [ instance closeSession ]
-]
-
-{ #category : #api }
-SteamerDatabase class >> deleteSteamArtifactsWithIds: aCollection [
-
-	| instance |
-	instance := self new.
-	self prepareInstance: instance.
-	[ 
-	instance session inUnitOfWorkDo: [ 
-		aCollection do: [ :eachId | 
-			| artifact |
-			artifact := instance session
-				            readOneOf: SteamArtifact
-				            where: [ :each | each id = eachId ].
-			artifact ifNotNil: [ instance session delete: artifact ] ] ] ] 
-		ensure: [ instance closeSession ]
-]
-
-{ #category : #api }
-SteamerDatabase class >> insertOrUpdateSteamArtifactWithId: anId [
-
-self deleteSteamArtifactWithId: anId.
-self insertSteamArtifactWithId: anId.
-]
-
-{ #category : #api }
-SteamerDatabase class >> insertOrUpdateSteamArtifactsWithIds: aCollection [
-
-aCollection do: [ :each |
-	self deleteSteamArtifactWithId: each.
-	self insertSteamArtifactWithId: each ]
-]
-
-{ #category : #private }
-SteamerDatabase class >> insertSteamArtifactWithId: anId [
-
-	| instance |
-	instance := self new.
-	self prepareInstance: instance.
-	^ [ 
-	  instance session inUnitOfWorkDo: [ 
-		  instance session register: (SteamArtifact newWithId: anId) ] ] 
-		  ensure: [ instance closeSession ]
+	self error: 'SteamerDatabase is a singleton -- send uniqueInstance instead'
 ]
 
 { #category : #private }
@@ -122,57 +48,10 @@ SteamerDatabase class >> prepareInstance: instance [
 	instance session accessor logging: false
 ]
 
-{ #category : #api }
-SteamerDatabase class >> selectAllSteamArtifacts [
+{ #category : #'initialize-release' }
+SteamerDatabase class >> uniqueInstance [
 
-	| instance |
-	instance := self new.
-	self prepareInstance: instance.
-	^ [ 
-	  instance session inUnitOfWorkDo: [
-		instance session read: SteamArtifact. 
- ] ] ensure: [ 
-		  instance closeSession ]
-]
-
-{ #category : #api }
-SteamerDatabase class >> selectSteamArtifactWithId: anId [
-
-	| instance |
-	instance := self new.
-	self prepareInstance: instance.
-	^ [ 
-	  instance session inUnitOfWorkDo: [ 
-		  instance session
-			  readOneOf: SteamArtifact
-			  where: [ :each | each id = anId ] ] ] ensure: [ 
-		  instance closeSession ]
-]
-
-{ #category : #api }
-SteamerDatabase class >> selectSteamArtifactsWithIds: aCollection [
-
-	| instance |
-	instance := self new.
-	self prepareInstance: instance.
-	^ [ 
-	  instance session inUnitOfWorkDo: [ 
-		  aCollection do: [ :eachId | 
-			  instance session
-				  read: SteamArtifact
-				  where: [ :each | each id = eachId ] ] ] ] ensure: [ 
-		  instance closeSession ]
-]
-
-{ #category : #api }
-SteamerDatabase class >> updateAllSteamArtifacts [
-
-	| instance artifacts ids |
-	instance := self new.
-	self prepareInstance: instance.
-	artifacts := self selectAllSteamArtifacts.
-	ids := artifacts collect: [ :each | each id].
-	^ self insertOrUpdateSteamArtifactsWithIds: ids
+	^ uniqueInstance ifNil: [ uniqueInstance := super new. self prepareInstance: uniqueInstance  ]
 ]
 
 { #category : #private }
@@ -181,6 +60,17 @@ SteamerDatabase >> closeSession [
 	databaseSession ifNotNil: [
 		databaseSession logout.
 		databaseSession := nil ]
+]
+
+{ #category : #api }
+SteamerDatabase >> createTableIfNeeded [
+
+	| instance |
+	instance := self uniqueInstance.
+	[ 
+	[ instance session createTables ]
+		on: SQLite3Error
+		do: [ :ex | ex return: nil ] ] ensure: [ instance closeSession ]
 ]
 
 { #category : #private }
@@ -198,6 +88,42 @@ SteamerDatabase >> databaseFileName: anObject [
 { #category : #private }
 SteamerDatabase >> defaultDatabaseFileName [
 ^ 'steamer.db'
+]
+
+{ #category : #api }
+SteamerDatabase >> deleteAllSteamArtifacts [
+
+	|artifacts ids |
+	artifacts := self selectAllSteamArtifacts.
+	ids := artifacts collect: [ :each | each id ].
+	^ self deleteSteamArtifactsWithIds: ids
+]
+
+{ #category : #api }
+SteamerDatabase >> deleteSteamArtifactWithId: anId [
+
+	[ 
+	self session inUnitOfWorkDo: [ 
+		| artifact |
+		artifact := self session
+			            readOneOf: SteamArtifact
+			            where: [ :each | each id = anId ].
+		artifact ifNotNil: [ self session delete: artifact ] ] ] 
+		ensure: [ self closeSession ]
+]
+
+{ #category : #api }
+SteamerDatabase >> deleteSteamArtifactsWithIds: aCollection [
+
+	[ 
+	self session inUnitOfWorkDo: [ 
+		aCollection do: [ :eachId | 
+			| artifact |
+			artifact := self session
+				            readOneOf: SteamArtifact
+				            where: [ :each | each id = eachId ].
+			artifact ifNotNil: [ self session delete: artifact ] ] ] ] 
+		ensure: [ self closeSession ]
 ]
 
 { #category : #private }
@@ -219,6 +145,31 @@ accessor := DatabaseAccessor forLogin: databaseLogin.
 accessor login.
 ]
 
+{ #category : #api }
+SteamerDatabase >> insertOrUpdateSteamArtifactWithId: anId [
+
+self deleteSteamArtifactWithId: anId.
+self insertSteamArtifactWithId: anId.
+]
+
+{ #category : #api }
+SteamerDatabase >> insertOrUpdateSteamArtifactsWithIds: aCollection [
+
+	^ aCollection do: [ :each | 
+		self deleteSteamArtifactWithId: each.
+		self insertSteamArtifactWithId: each ]
+]
+
+{ #category : #private }
+SteamerDatabase >> insertSteamArtifactWithId: anId [
+
+
+	^ [ 
+	  self session inUnitOfWorkDo: [ 
+		  self session register: (SteamArtifact newWithId: anId) ] ] 
+		  ensure: [ self closeSession ]
+]
+
 { #category : #private }
 SteamerDatabase >> openDatabaseSession [
 
@@ -227,7 +178,50 @@ SteamerDatabase >> openDatabaseSession [
 			yourself
 ]
 
+{ #category : #api }
+SteamerDatabase >> selectAllSteamArtifacts [
+
+
+	^ [ 
+	  self session inUnitOfWorkDo: [ 
+		  self session read: SteamArtifact ] ] ensure: [ 
+		  self closeSession ]
+]
+
+{ #category : #api }
+SteamerDatabase >> selectSteamArtifactWithId: anId [
+
+
+	^ [ 
+	  self session inUnitOfWorkDo: [ 
+		  self session
+			  readOneOf: SteamArtifact
+			  where: [ :each | each id = anId ] ] ] ensure: [ 
+		  self closeSession ]
+]
+
+{ #category : #api }
+SteamerDatabase >> selectSteamArtifactsWithIds: aCollection [
+
+	^ [ 
+	  self session inUnitOfWorkDo: [ 
+		  aCollection do: [ :eachId | 
+			  self session
+				  read: SteamArtifact
+				  where: [ :each | each id = eachId ] ] ] ] ensure: [ 
+		  self closeSession ]
+]
+
 { #category : #private }
 SteamerDatabase >> session [
 	^ databaseSession  ifNil: [ databaseSession  := self openDatabaseSession ] 
+]
+
+{ #category : #api }
+SteamerDatabase >> updateAllSteamArtifacts [
+
+	|  artifacts ids |
+	artifacts := self selectAllSteamArtifacts.
+	ids := artifacts collect: [ :each | each id ].
+	^ self insertOrUpdateSteamArtifactsWithIds: ids
 ]
