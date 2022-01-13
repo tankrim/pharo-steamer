@@ -44,7 +44,7 @@ SteamerInteractionServer >> interactUsing: interactionSocket [
 	| receivedData response |
 	[ 
 	receivedData := interactionSocket receiveDataTimeout: 5.
-	[ response := self processMessage: receivedData ]
+	[ response := self processMessage: receivedData trimmed ]
 		on: Error
 		do: [ :ex | 
 			response := self errorResponse: ex.
