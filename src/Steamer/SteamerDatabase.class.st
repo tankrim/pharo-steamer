@@ -65,12 +65,10 @@ SteamerDatabase >> closeSession [
 { #category : #api }
 SteamerDatabase >> createTableIfNeeded [
 
-	| instance |
-	instance := self uniqueInstance.
 	[ 
-	[ instance session createTables ]
+	[ self session createTables ]
 		on: SQLite3Error
-		do: [ :ex | ex return: nil ] ] ensure: [ instance closeSession ]
+		do: [ :ex | ex return: nil ] ] ensure: [ self closeSession ]
 ]
 
 { #category : #private }
