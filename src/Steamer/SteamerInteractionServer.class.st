@@ -12,7 +12,7 @@ Class {
 { #category : #private }
 SteamerInteractionServer >> errorResponse: anError [
 
-	^ anError printString, String lf
+	^ 'NOTOK ', anError printString , String lf
 ]
 
 { #category : #private }
@@ -44,12 +44,11 @@ SteamerInteractionServer >> interactUsing: interactionSocket [
 
 	| receivedData response |
 	[ 
-	response := self okResponse.
 	receivedData := interactionSocket receiveDataTimeout: 5.
-	[ self processMessage: receivedData ]
+	[ response := self processMessage: receivedData ]
 		on: Error
-		do: [ :ex |
-			response := self errorResponse: ex. 
+		do: [ :ex | 
+			response := self errorResponse: ex.
 			self handleError: ex ].
 	interactionSocket sendData: response ] ensure: [ 
 		interactionSocket closeAndDestroy ]
@@ -66,6 +65,12 @@ isRunningLock critical: [ isRunning := aBoolean ]
 ]
 
 { #category : #private }
+SteamerInteractionServer >> notOkResponse [
+
+	^ 'NOTOK' , String lf
+]
+
+{ #category : #private }
 SteamerInteractionServer >> okResponse [
 
 ^ 'OK' ,String lf.
@@ -77,9 +82,12 @@ SteamerInteractionServer >> processAdd: aString [
 	| id instruction |
 	instruction := aString splitOn: Character space.
 	id := instruction at: 2.
-	^ [ SteamerDatabase uniqueInstance insertOrUpdateSteamArtifactWithId: id ] ensure: [ 
-		  TranscriptLogger new runDuring: [ 
-			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
+	[ 
+	SteamerDatabase uniqueInstance insertOrUpdateSteamArtifactWithId: id ] 
+		ensure: [ 
+			TranscriptLogger new runDuring: [ 
+				StringSignal emit: '[Steamer] Processed: ' , aString ] ].
+	^ self okResponse
 ]
 
 { #category : #private }
@@ -88,9 +96,11 @@ SteamerInteractionServer >> processDelete: aString [
 	| id instruction |
 	instruction := aString splitOn: Character space.
 	id := instruction at: 2.
-	^ [ SteamerDatabase uniqueInstance deleteSteamArtifactWithId: id ] ensure: [ 
-		  TranscriptLogger new runDuring: [ 
-			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
+	[ SteamerDatabase uniqueInstance deleteSteamArtifactWithId: id ] 
+		ensure: [ 
+			TranscriptLogger new runDuring: [ 
+				StringSignal emit: '[Steamer] Processed: ' , aString ] ].
+	^ self okResponse 
 ]
 
 { #category : #private }
@@ -107,25 +117,28 @@ SteamerInteractionServer >> processMessage: aString [
 
 	(aString matchesRegex: '^quit') ifTrue: [ 
 		^ self processQuit: aString ].
-	
+
 	(aString matchesRegex: '^updateAll') ifTrue: [ 
-		^ self processUpdateAll: aString ]
+		^ self processUpdateAll: aString ].
+	^ self notOkResponse
 ]
 
 { #category : #private }
 SteamerInteractionServer >> processQuit: aString [
 
-	^ [ self stop ] ensure: [ 
-		  TranscriptLogger new runDuring: [ 
-			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
+	[ self stop ] ensure: [ 
+		TranscriptLogger new runDuring: [ 
+			StringSignal emit: '[Steamer] Processed: ' , aString ] ].
+	^ self okResponse 
 ]
 
 { #category : #private }
 SteamerInteractionServer >> processUpdateAll: aString [
 
-	^ [ SteamerDatabase uniqueInstance updateAllSteamArtifacts ] ensure: [ 
+	[ SteamerDatabase uniqueInstance updateAllSteamArtifacts ] ensure: [ 
 		  TranscriptLogger new runDuring: [ 
-			  StringSignal emit: '[Steamer] Processed: ' , aString ] ]
+			  StringSignal emit: '[Steamer] Processed: ' , aString ] ].
+	^ self okResponse 
 ]
 
 { #category : #private }
