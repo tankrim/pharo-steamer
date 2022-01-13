@@ -18,11 +18,10 @@ SteamerInteractionServer >> errorResponse: anError [
 { #category : #private }
 SteamerInteractionServer >> handleError: anError [
 
-TranscriptLogger new runDuring: [ 
-				StringSignal emit: '[Steamer] ' , anError displayString ].
-			(anError isKindOf: SteamerError)
-				ifTrue: [ anError return: nil ]
-				ifFalse: [ anError pass ]
+	self log: '[Steamer] ' with: anError.
+	(anError isKindOf: SteamerError)
+		ifTrue: [ anError return: nil ]
+		ifFalse: [ anError pass ]
 ]
 
 { #category : #initialization }
@@ -65,6 +64,20 @@ isRunningLock critical: [ isRunning := aBoolean ]
 ]
 
 { #category : #private }
+SteamerInteractionServer >> log: aString [
+
+	TranscriptLogger new runDuring: [ 
+		StringSignal emit: aString ].
+
+]
+
+{ #category : #private }
+SteamerInteractionServer >> log: aString with: anObject [
+
+	TranscriptLogger new runDuring: [ StringSignal emit: aString, anObject printString  ]
+]
+
+{ #category : #private }
 SteamerInteractionServer >> notOkResponse [
 
 	^ 'NOTOK' , String lf
@@ -85,8 +98,7 @@ SteamerInteractionServer >> processAdd: aString [
 	[ 
 	SteamerDatabase uniqueInstance insertOrUpdateSteamArtifactWithId: id ] 
 		ensure: [ 
-			TranscriptLogger new runDuring: [ 
-				StringSignal emit: '[Steamer] Processed: ' , aString ] ].
+			self log: '[Steamer] Processed: ' with: aString ].
 	^ self okResponse
 ]
 
@@ -98,16 +110,14 @@ SteamerInteractionServer >> processDelete: aString [
 	id := instruction at: 2.
 	[ SteamerDatabase uniqueInstance deleteSteamArtifactWithId: id ] 
 		ensure: [ 
-			TranscriptLogger new runDuring: [ 
-				StringSignal emit: '[Steamer] Processed: ' , aString ] ].
-	^ self okResponse 
+			self log: '[Steamer] Processed: ' with: aString ].
+	^ self okResponse
 ]
 
 { #category : #private }
 SteamerInteractionServer >> processMessage: aString [
 
-	TranscriptLogger new runDuring: [ 
-		StringSignal emit: '[Steamer] Processing: ' , aString ].
+	self log: '[Steamer] Processing: ' with: aString.
 
 	(aString matchesRegex: '^add .+') ifTrue: [ 
 		^ self processAdd: aString ].
@@ -127,18 +137,16 @@ SteamerInteractionServer >> processMessage: aString [
 SteamerInteractionServer >> processQuit: aString [
 
 	[ self stop ] ensure: [ 
-		TranscriptLogger new runDuring: [ 
-			StringSignal emit: '[Steamer] Processed: ' , aString ] ].
-	^ self okResponse 
+		self log: '[Steamer] Processed: ' with: aString ].
+	^ self okResponse
 ]
 
 { #category : #private }
 SteamerInteractionServer >> processUpdateAll: aString [
 
 	[ SteamerDatabase uniqueInstance updateAllSteamArtifacts ] ensure: [ 
-		  TranscriptLogger new runDuring: [ 
-			  StringSignal emit: '[Steamer] Processed: ' , aString ] ].
-	^ self okResponse 
+			self log: '[Steamer] Processed: ' with: aString].
+	^ self okResponse
 ]
 
 { #category : #private }
@@ -157,17 +165,14 @@ SteamerInteractionServer >> start [
 	connectionSocket := Socket newTCP.
 	connectionSocket listenOn: 9999 backlogSize: 10.
 	[ self serve ] fork.
-	SteamerDatabase  uniqueInstance createTableIfNeeded.
-	TranscriptLogger new runDuring: [ 
-		StringSignal emit:
-			'[Steamer] InteractionServer listening on port 9999' ]
+	SteamerDatabase uniqueInstance createTableIfNeeded.
+	self log:
+			'[Steamer] InteractionServer listening on port 9999'
 ]
 
 { #category : #api }
 SteamerInteractionServer >> stop [
 
 	self isRunning: false.
-	TranscriptLogger new runDuring: [ 
-		StringSignal emit:
-			'[Steamer] InteractionServer is no longer listening' ]
+	self log: '[Steamer] InteractionServer is no longer listening'
 ]
