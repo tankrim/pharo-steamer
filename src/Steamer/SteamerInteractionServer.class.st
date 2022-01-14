@@ -174,7 +174,7 @@ SteamerInteractionServer >> start [
 		self isRunning ifTrue: [ ^ self ].
 		self isRunning: true ].
 	connectionSocket := Socket newTCP.
-	connectionSocket listenOn: 9999 backlogSize: 10.
+	connectionSocket listenOn: 9999 backlogSize: 10 interface: (NetNameResolver addressFromString: '0.0.0.0').
 	[ self serve ] fork.
 	self database createTableIfNeeded.
 	self log: '[Steamer] InteractionServer listening on port 9999'
